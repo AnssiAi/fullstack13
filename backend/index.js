@@ -1,35 +1,8 @@
 require('dotenv').config();
-const { Sequelize, QueryTypes, Model, DataTypes } = require('sequelize');
 const express = require('express');
+const Note = require('./Models/Note.js')
 const app = express();
 app.use(express.json());
-
-const sequelize = new Sequelize(process.env.DATABASE_URL);
-
-class Note extends Model {}
-
-Note.init({
-    id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true
-    },
-    content: {
-      type: DataTypes.TEXT,
-      allowNull: false
-    },
-    important: {
-      type: DataTypes.BOOLEAN
-    },
-    date: {
-      type: DataTypes.DATE
-    }
-  }, {
-    sequelize,
-    underscored: true,
-    timestamps: false,
-    modelName: 'note'
-  })
 
 app.get('/api/notes', async (req, res) => {
     const notes = await Note.findAll();
