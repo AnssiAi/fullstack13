@@ -27,4 +27,6 @@ Note.init({
     modelName: 'note'
   })
 
+Note.sync();
+
 module.exports = Note;
