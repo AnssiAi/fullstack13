@@ -1,6 +1,6 @@
-const { Sequelize, QueryTypes, Model, DataTypes } = require('sequelize');
+const { Model, DataTypes } = require('sequelize');
 
-const sequelize = new Sequelize(process.env.DATABASE_URL);
+const { sequelize } = require('../util/db');
 
 class Note extends Model {}
 
@@ -26,7 +26,5 @@ Note.init({
     timestamps: false,
     modelName: 'note'
   })
-
-Note.sync();
 
 module.exports = Note;
