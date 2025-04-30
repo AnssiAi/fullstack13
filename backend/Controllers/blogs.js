@@ -24,6 +24,27 @@ router.post('/', async (req, res) => {
         res.status(400).json({error});
     }
 })
+router.get('/:id', blogFinder, async (req, res) => {
+    if (req.blog) {
+      console.log(JSON.stringify(req.blog));
+      res.json(req.blog)
+    } else {
+      res.status(404).end()
+    }
+  })
+router.put('/:id', blogFinder, async (req, res) => {
+    if (req.blog){
+      try {
+          req.blog.likes = req.body.likes;
+          await req.blog.save();
+          res.json(req.blog);
+      } catch (error) {
+          res.status(400).json({error});
+      }
+    }else {
+      res.status(404).end();
+    } 
+})
 router.delete('/:id', blogFinder, async (req, res) => {
     if (req.blog){
       try {
