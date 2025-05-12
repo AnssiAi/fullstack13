@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { Utils } = require('sequelize');
+const { Op } = require('sequelize');
 const { Note, User } = require('../Models/index.js');
 const tokenExtractor = require('../util/tokenExtractor.js');
 
@@ -16,12 +16,23 @@ const noteFinder = async (req, res, next) => {
  * ROUTES
  */
 router.get('/', async (req, res) => {
+    const where = {};
+    
+    if (req.query.important){
+      where.important = req.query.important === 'true'
+    }
+    if (req.query.search){
+      where.content = {
+          [Op.substring]: req.query.search ? req.query.search : ''
+        }
+    }
     const notes = await Note.findAll({
       attributes: { exclude: ['userId']},
       include:{
         model: User,
         attributes: ['name'],
-      }
+      },
+      where
     });
     console.log(JSON.stringify(notes, null, 2))
     res.json(notes);
