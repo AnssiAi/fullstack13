@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 const router = require('express').Router();
 
-const { User, Note } = require('../Models/index.js');
+const { User, Note, Blog } = require('../Models/index.js');
 const tokenExtractor = require('../util/tokenExtractor.js');
 
 /**
@@ -10,10 +10,13 @@ const tokenExtractor = require('../util/tokenExtractor.js');
 router.get('/', async (req, res) => {
   const users = await User.findAll({
     attributes: { exclude: ['passwordHash']},
-    include: {
+    include: [{
         model: Note,
         attributes: { exclude: ['userId']}
-    },
+    }, {
+      model: Blog,
+      attributes: { exclude: ['userId']}
+    }],
   })
   res.json(users)
 })
