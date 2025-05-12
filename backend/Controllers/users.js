@@ -18,17 +18,6 @@ router.get('/', async (req, res) => {
   res.json(users)
 })
 
-router.post('/', async (req, res) => {
-  const saltRounds = 10;
-  const passwordHash = await bcrypt.hash(req.body.password, saltRounds);
-  try {
-    const user = await User.create({...req.body, passwordHash: passwordHash})
-    res.json(user)
-  } catch(error) {
-    next(error);
-  }
-})
-
 router.get('/:id', async (req, res) => {
   const user = await User.findByPk(req.params.id)
   if (user) {
@@ -38,7 +27,7 @@ router.get('/:id', async (req, res) => {
   }
 })
 
-router.put('/:username', tokenExtractor, async (req, res) => {
+router.put('/:username', tokenExtractor, async (req, res, next) => {
     try {
       const user = await User.findOne({where: { username: req.params.username}});
       user.name = req.body.name;
@@ -48,5 +37,16 @@ router.put('/:username', tokenExtractor, async (req, res) => {
         next(error);
     }
   })
+
+router.post('/', async (req, res, next) => {
+  const saltRounds = 10;
+  const passwordHash = await bcrypt.hash(req.body.password, saltRounds);
+  try {
+    const user = await User.create({...req.body, passwordHash: passwordHash})
+    res.json(user)
+  } catch(error) {
+    next(error);
+  }
+})
 
 module.exports = router
