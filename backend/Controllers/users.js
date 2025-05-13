@@ -49,7 +49,7 @@ router.get('/:id', async (req, res) => {
       model: Blog,
       as: 'readings',
       through: {
-        attributes: []
+        attributes: ['is_read', 'id']
       }
     }]
   })
