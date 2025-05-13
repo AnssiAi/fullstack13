@@ -18,7 +18,7 @@ Team.belongsToMany(User, { through: Membership })
 User.belongsToMany(Note, { through: UserNotes, as: 'markedNotes'}) //Alias määrittely liitokselle
 Note.belongsToMany(User, { through: UserNotes, as: 'usersMarked'})
 
-User.belongsToMany(Blog, {through: ReadList, as: 'toRead'})
+User.belongsToMany(Blog, {through: ReadList, as: 'readings'})
 Blog.belongsToMany(User, {through: ReadList, as: 'markedToRead'})
 
 module.exports = {
@@ -26,5 +26,7 @@ module.exports = {
   Blog,
   User,
   Team,
-  Membership
+  Membership,
+  UserNotes,
+  ReadList
 }

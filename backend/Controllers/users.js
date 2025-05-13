@@ -26,7 +26,7 @@ router.get('/', async (req, res) => {
           attributes: []
         }
     },
-     {
+    {
       model: Blog,
       attributes: { exclude: ['userId']}
     },
@@ -43,7 +43,16 @@ router.get('/', async (req, res) => {
 })
 
 router.get('/:id', async (req, res) => {
-  const user = await User.findByPk(req.params.id)
+  const user = await User.findByPk(req.params.id, {
+    attributes: { exclude: ['passwordHash']},
+    include: [{
+      model: Blog,
+      as: 'readings',
+      through: {
+        attributes: []
+      }
+    }]
+  })
   if (user) {
     res.json(user)
   } else {

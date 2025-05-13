@@ -11,6 +11,7 @@ const usersRouter = require('./Controllers/users.js');
 const loginRouter = require('./Controllers/login.js');
 const authorsRouter = require('./Controllers/authors.js');
 const adminRouter = require('./Controllers/admin.js');
+const readListRouter = require('./Controllers/readingLists.js');
 
 app.use(express.json());
 app.use('/api/notes', notesRouter);
@@ -19,6 +20,7 @@ app.use('/api/users', usersRouter);
 app.use('/api/login', loginRouter);
 app.use('/api/authors', authorsRouter);
 app.use('/api/admin', adminRouter);
+app.use('/api/readinglists', readListRouter);
 app.use(errorHandler);
 
 const start = async () => {
