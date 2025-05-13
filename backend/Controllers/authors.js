@@ -9,7 +9,8 @@ const { Blog } = require('../Models/index.js');
 router.get('/', async (req, res) => {
   const authors = await Blog.findAll({
     attributes: ['author', [sequelize.fn('COUNT', sequelize.col('author')), 'blogs'], [sequelize.fn('SUM', sequelize.col('likes')), 'likes']],
-    group: [['author']]
+    group: [['author']],
+    order: [['likes', 'DESC']]
   })
 
   res.json(authors)
