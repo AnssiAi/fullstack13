@@ -8,10 +8,6 @@ User.hasMany(Blog);
 Note.belongsTo(User);
 Blog.belongsTo(User);
 
-Note.sync({ alter: true });
-Blog.sync({ alter: true });
-User.sync({ alter:true });
-
 module.exports = {
   Note,
   Blog,
