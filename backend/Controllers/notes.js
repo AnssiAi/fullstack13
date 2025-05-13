@@ -28,10 +28,19 @@ router.get('/', async (req, res) => {
     }
     const notes = await Note.findAll({
       attributes: { exclude: ['userId']},
-      include:{
+      include:[{
         model: User,
         attributes: ['name'],
       },
+      {
+        model: User,
+        as: 'usersMarked',
+        attributes: ['name'],
+        through: {
+          attributes: []
+        }
+      }
+      ],
       where
     });
     console.log(JSON.stringify(notes, null, 2))

@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 const router = require('express').Router();
 
-const { User, Note, Blog } = require('../Models/index.js');
+const { User, Note, Blog, Team } = require('../Models/index.js');
 const tokenExtractor = require('../util/tokenExtractor.js');
 
 /**
@@ -13,10 +13,31 @@ router.get('/', async (req, res) => {
     include: [{
         model: Note,
         attributes: { exclude: ['userId']}
-    }, {
+    },
+    {
+        model: Note,
+        as: 'markedNotes',
+        attributes: { exclude: ['userId']},
+        include: {
+          model: User,
+          attributes: ['name']
+        },
+        through: {
+          attributes: []
+        }
+    },
+     {
       model: Blog,
       attributes: { exclude: ['userId']}
-    }],
+    },
+    {
+      model: Team,
+      attributes: ['name', 'id'],
+      through: {
+        attributes: []
+      }
+    }
+  ],
   })
   res.json(users)
 })
