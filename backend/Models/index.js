@@ -5,12 +5,14 @@ const Team = require('./Team.js')
 const Membership = require('./Membership.js')
 const UserNotes = require('./UserNote.js')
 const ReadList = require('./ReadList.js')
+const Session = require('./Session.js')
 
 //Viiteavaimen määrittely
 User.hasMany(Note);
 User.hasMany(Blog);
 Note.belongsTo(User);
 Blog.belongsTo(User);
+Session.belongsTo(User);
 
 User.belongsToMany(Team, { through: Membership }) //liitostaulu
 Team.belongsToMany(User, { through: Membership })
@@ -21,6 +23,8 @@ Note.belongsToMany(User, { through: UserNotes, as: 'usersMarked'})
 User.belongsToMany(Blog, {through: ReadList, as: 'readings'})
 Blog.belongsToMany(User, {through: ReadList, as: 'markedToRead'})
 
+
+
 module.exports = {
   Note,
   Blog,
@@ -28,5 +32,6 @@ module.exports = {
   Team,
   Membership,
   UserNotes,
-  ReadList
+  ReadList,
+  Session
 }

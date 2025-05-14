@@ -2,6 +2,7 @@ const router = require('express').Router();
 const { Op } = require('sequelize');
 const { Note, User } = require('../Models/index.js');
 const tokenExtractor = require('../util/tokenExtractor.js');
+const userVerify = require('../util/userVerify.js');
 
 /**
  * MIDDLEWARE
@@ -46,10 +47,9 @@ router.get('/', async (req, res) => {
     console.log(JSON.stringify(notes, null, 2))
     res.json(notes);
 })
-router.post('/', tokenExtractor, async (req, res) => {
+router.post('/', tokenExtractor, userVerify, async (req, res) => {
     try {
-        const user = await User.findByPk(req.decodedToken.id);
-        const note = await Note.create({...req.body, userId: user.id, date: new Date()});
+        const note = await Note.create({...req.body, userId: req.user.id, date: new Date()});
         res.json(note);
     } catch (error) {
         res.status(400).json({error});

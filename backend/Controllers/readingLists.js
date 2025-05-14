@@ -3,6 +3,7 @@ const router = require('express').Router();
 const { sequelize } = require('../util/db.js');
 const { ReadList } = require('../Models/index.js');
 const tokenExtractor = require('../util/tokenExtractor.js');
+const userVerify = require('../util/userVerify.js');
 
 /**
  * MIDDLEWARE
@@ -25,7 +26,7 @@ router.post('/', async (req, res, next) => {
   }
 })
 
-router.put('/:id', tokenExtractor, listFinder, async (req, res, next) => {
+router.put('/:id', tokenExtractor, userVerify, listFinder, async (req, res, next) => {
     if(req.list && req.decodedToken.id === req.list.userId){
         try {
             req.list.isRead = req.body.read;

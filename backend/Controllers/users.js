@@ -4,6 +4,7 @@ const { Op } = require('sequelize');
 
 const { User, Note, Blog, Team } = require('../Models/index.js');
 const tokenExtractor = require('../util/tokenExtractor.js');
+const userVerify = require('../util/userVerify.js');
 
 /**
  * ROUTES
@@ -51,7 +52,7 @@ router.get('/:id', async (req, res) => {
     const bool = req.query.read === 'true' ? true : false;
     throughWhere.isRead = {[Op.is]: bool};
   }
-
+  
   const user = await User.findOne({ 
     where,
     attributes: { exclude: ['passwordHash']},
@@ -71,7 +72,7 @@ router.get('/:id', async (req, res) => {
   }
 })
 
-router.put('/:username', tokenExtractor, async (req, res, next) => {
+router.put('/:username', tokenExtractor, userVerify, async (req, res, next) => {
     try {
       const user = await User.findOne({where: { username: req.params.username}});
       user.name = req.body.name;
